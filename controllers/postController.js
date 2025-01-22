@@ -40,26 +40,47 @@ const index = (req, res) =>{
 
 //show
 const show = (req, res) => {
-    const post = posts.find(p => p.id === parseInt(req.params.id));
-    res.status(200).send(post);
+    // const post = posts.find(p => p.id === parseInt(req.params.id));
+    // res.status(200).send(post);
+    const id = req.params.id;
+
+    const sql = "SELECT * FROM `posts` WHERE id = ?";
+
+    connection.query(sql, [id], (err, posts) =>{
+        if (err){
+            return res.status(500).json({
+                message: "errore interno del server",
+            });
+        }else if (posts.length === 0) {
+            return res.status(404).json({
+                message: "Post non trovata",
+            })
+        }else{
+            //fare qui seconda query
+            return res.status(200).json({
+                status: "success",
+                data: posts[0],
+            });
+        }
+    });
 
 };
 
 //create o store
-const store = (req, res) => {
+//const store = (req, res) => {
     //1)controllo i dati inseriti su console log
     //2)Ora devo calcolare l'id consecutivo all'ultimo elemento dell'array se array nullo id =1
     //3)const id = posts[posts.length-1].id+1 => vale solo per array non nullo
     //4)Costruisco il json con newPostId e body inserito dal client ( Postman)
     //5)ora puscio l'oggetto nell'array posts
     //6)ora mando la risposta con quell'oggetto
-    console.log(req.body)
-    const id = posts.length ? posts[posts.length - 1].id + 1 : 1;
-    const newItem = { id, ...req.body }
-    posts.push(newItem);
-    res.status(201).json(newItem);
+    // console.log(req.body)
+    // const id = posts.length ? posts[posts.length - 1].id + 1 : 1;
+    // const newItem = { id, ...req.body }
+    // posts.push(newItem);
+    // res.status(201).json(newItem);
 
-};
+//};
 
 //update
 // const update = (req, res) => {
@@ -84,11 +105,24 @@ const store = (req, res) => {
 
 // destroy
 const destroy = (req, res) => {
-    const postId = parseInt(req.params.id);
-    const postIndex = posts.findIndex(p => p.id === postId);
-    posts.splice(postIndex, 1);
-    console.log("Lista aggiornata dei post", posts);
-    res.sendStatus(204);
+    // const postId = parseInt(req.params.id);
+    // const postIndex = posts.findIndex(p => p.id === postId);
+    // posts.splice(postIndex, 1);
+    // console.log("Lista aggiornata dei post", posts);
+    // res.sendStatus(204);
+    const id = req.params.id;
+
+    const sql = "DELETE FROM `posts` WHERE id=?"
+
+    connection.query(sql, [id], (err) => {
+        if(err) {
+            return res.status(500).json({
+                message: "errore interno del server",
+            });
+        }else{
+            return res.sendStatus(204);
+        }
+    });
 };
 
 module.exports = {
