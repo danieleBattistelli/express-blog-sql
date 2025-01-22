@@ -1,6 +1,22 @@
-const posts = require("../data/posts");
+// const posts = require("../data/posts");
+const connection = require("../data/db");
 
+const index = (req, res) =>{
+    const sql = "SELECT * FROM `posts`";
 
+    connection.query(sql, (err, posts) => {
+        if (err) {
+          return res.status(500).json({
+            message: "Errore interno del server",
+          });
+        } else {
+          return res.status(200).json({
+            status: "success",
+            data: posts,
+          });
+        }
+      });
+    };
 
 //index
 
@@ -9,18 +25,18 @@ const posts = require("../data/posts");
 //     throw new Error('Errore forzato')
 //   };
 
-const index = (req, res) => {
-    const tag = req.query.tag;
-    let filterPosts = posts;
-    if (tag) {
-        filterPosts = posts.filter(post => post.tags.includes(tag));
-    }
+// const index = (req, res) => {
+//     const tag = req.query.tag;
+//     let filterPosts = posts;
+//     if (tag) {
+//         filterPosts = posts.filter(post => post.tags.includes(tag));
+//     }
 
-    res.json({
-        data: filterPosts,
-        count: filterPosts.length
-    });
-};
+//     res.json({
+//         data: filterPosts,
+//         count: filterPosts.length
+//     });
+// };
 
 //show
 const show = (req, res) => {
@@ -46,25 +62,25 @@ const store = (req, res) => {
 };
 
 //update
-const update = (req, res) => {
-    //con find prendo l'elemento dell'array che ha lo stesso id dell'id della request
-    //serve parseInt perche' su quesry string id e' una stringa e su posts e' un numero
-    const post = posts.find(p => p.id === parseInt(req.params.id));
-    //Tramite object assign vado a copiare i valori di tutte le proprieta' 
-    //nell'oggetto target , post in questo caso 
-    Object.assign(post, req.body);
-    res.json(post);
-};
+// const update = (req, res) => {
+//     //con find prendo l'elemento dell'array che ha lo stesso id dell'id della request
+//     //serve parseInt perche' su quesry string id e' una stringa e su posts e' un numero
+//     const post = posts.find(p => p.id === parseInt(req.params.id));
+//     //Tramite object assign vado a copiare i valori di tutte le proprieta' 
+//     //nell'oggetto target , post in questo caso 
+//     Object.assign(post, req.body);
+//     res.json(post);
+// };
 
 // modify
-const modify = (req, res) => {
-    const post = posts.find(p => p.id === parseInt(req.params.id));
-    Object.keys(req.body).forEach(key => {
-        post[key] = req.body[key];
-    });
-    res.json(post);
+// const modify = (req, res) => {
+//     const post = posts.find(p => p.id === parseInt(req.params.id));
+//     Object.keys(req.body).forEach(key => {
+//         post[key] = req.body[key];
+//     });
+//     res.json(post);
 
-};
+// };
 
 // destroy
 const destroy = (req, res) => {
@@ -78,8 +94,8 @@ const destroy = (req, res) => {
 module.exports = {
     index,
     show,
-    store,
-    update,
-    modify,
-    destroy
-}
+    // store,
+    // update,
+    // modify,
+    destroy,
+};

@@ -9,19 +9,21 @@ const checkPostExist = (req, res, next) => {
   *    Altrimenti
   *      mando la risposta con errore 404
   */
-    console.log("blog exists middleware");
-    const postId = parseInt(req.params.id);
-    post = posts.find(p => p.id === postId);
-    //con find se non trovato abbiamo undefinied = state FALSE
-    if (post !== undefined) {
-        next();
-    } else {
-        res.statusCode = 404;
-        res.json({
-            error: true,
-            message: "post non trovato"
-        });
-    }
+    // console.log("blog exists middleware");
+    // const postId = parseInt(req.params.id);
+    // post = posts.find(p => p.id === postId);
+    // //con find se non trovato abbiamo undefinied = state FALSE
+    // if (post !== undefined) {
+    //     next();
+    // } else {
+    //     res.statusCode = 404;
+    //     res.json({
+    //         error: true,
+    //         message: "post non trovato"
+    //     });
+    // }
+
+    next();
 }
 
 module.exports = checkPostExist;

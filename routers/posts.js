@@ -11,13 +11,13 @@ router.get("/", postController.index);
 router.get("/:id", checkPostExist, postController.show);
 
 //create
-router.post("/", postController.store);
+//router.post("/", postController.store);
 
 //update
-router.put("/:id", checkPostExist, postController.update);
+//router.put("/:id", checkPostExist, postController.update);
 
 //modify
-router.patch("/:id", checkPostExist, postController.modify);
+//router.patch("/:id", checkPostExist, postController.modify);
 
 //destroy
 router.delete("/:id", checkPostExist, postController.destroy);
